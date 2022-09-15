@@ -1,0 +1,1 @@
+# f3s_go_maven
