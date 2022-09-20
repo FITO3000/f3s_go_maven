@@ -15,7 +15,7 @@ type Project struct {
 	Properties             *Properties             `xml:"properties,omitempty"`
 	Dependencies           *Dependencies           `xml:"dependencies,omitempty"`
 	DependencyManagement   *DependencyManagement   `xml:"dependencyManagement,omitempty"`
-	Modules                *Modules                `xml:"modules>module,omitempty"`
+	Modules                *StringArray            `xml:"modules>module,omitempty"`
 	Build                  *Build                  `xml:"build,omitempty"`
 	Reporting              *Reporting              `xml:"reporting,omitempty"`
 	Name                   string                  `xml:"name,omitempty"`
@@ -63,7 +63,7 @@ type DependencyManagement struct {
 	Dependencies *Dependencies `xml:"dependencies,omitempty"`
 }
 
-type Modules []string
+type StringArray []string
 
 type Properties struct {
 	Entries map[string]string
@@ -73,7 +73,7 @@ type Build struct {
 	DefaultGoal           string            `xml:"defaultGoal,omitempty"`
 	Directory             string            `xml:"directory,omitempty"`
 	FinalName             string            `xml:"finalName,omitempty"`
-	Filters               *Filters          `xml:"filters,omitempty"`
+	Filters               *StringArray      `xml:"filters,omitempty"`
 	Resources             *Resources        `xml:"resources,omitempty"`
 	TestResources         *Resources        `xml:"testResources,omitempty"`
 	Plugins               *Plugins          `xml:"plugins,omitempty"`
@@ -86,21 +86,15 @@ type Build struct {
 	Extensions            *Extensions       `xml:"extensions,omitempty"`
 }
 
-type Filters []string
-
 type Resources []Resource
 
 type Resource struct {
-	TargetPath string    `xml:"targetPath,omitempty"`
-	Filtering  bool      `xml:"filtering,omitempty"`
-	Directory  string    `xml:"directory,omitempty"`
-	Includes   *Includes `xml:"includes,omitempty"`
-	Excludes   *Excludes `xml:"excludes,omitempty"`
+	TargetPath string       `xml:"targetPath,omitempty"`
+	Filtering  bool         `xml:"filtering,omitempty"`
+	Directory  string       `xml:"directory,omitempty"`
+	Includes   *StringArray `xml:"includes,omitempty"`
+	Excludes   *StringArray `xml:"excludes,omitempty"`
 }
-
-type Includes []string
-
-type Excludes []string
 
 type Plugins []Plugin
 
@@ -117,13 +111,11 @@ type Executions []Execution
 
 type Execution struct {
 	Id            string         `xml:"id,omitempty"`
-	Goals         *Goals         `xml:"goals,omitempty"`
+	Goals         *StringArray   `xml:"goals,omitempty"`
 	Phase         string         `xml:"phase,omitempty"`
 	Inherited     bool           `xml:"inherited,omitempty"`
 	Configuration *Configuration `xml:"configuration,omitempty"`
 }
-
-type Goals []string
 
 type Configuration []interface{}
 
@@ -157,18 +149,16 @@ type Organization struct {
 type Developers []Person
 
 type Person struct {
-	Id              string      `xml:"id,omitempty"`
-	Name            string      `xml:"name,omitempty"`
-	Email           string      `xml:"email,omitempty"`
-	Url             string      `xml:"url,omitempty"`
-	Organization    string      `xml:"organization,omitempty"`
-	OrganizationUrl string      `xml:"organizationUrl,omitempty"`
-	Roles           *Roles      `xml:"roles,omitempty"`
-	Timezone        string      `xml:"timezone,omitempty"`
-	Properties      *Properties `xml:"properties,omitempty"`
+	Id              string       `xml:"id,omitempty"`
+	Name            string       `xml:"name,omitempty"`
+	Email           string       `xml:"email,omitempty"`
+	Url             string       `xml:"url,omitempty"`
+	Organization    string       `xml:"organization,omitempty"`
+	OrganizationUrl string       `xml:"organizationUrl,omitempty"`
+	Roles           *StringArray `xml:"roles,omitempty"`
+	Timezone        string       `xml:"timezone,omitempty"`
+	Properties      *Properties  `xml:"properties,omitempty"`
 }
-
-type Roles []string
 
 type Contributors []Person
 
@@ -197,15 +187,13 @@ type Notifier struct {
 type MailingLists []MailingList
 
 type MailingList struct {
-	Name          string         `xml:"name,omitempty"`
-	Subscribe     string         `xml:"subscribe,omitempty"`
-	Unsubscribe   string         `xml:"unsubscribe,omitempty"`
-	Post          string         `xml:"post,omitempty"`
-	Archive       string         `xml:"archive,omitempty"`
-	OtherArchives *OtherArchives `xml:"otherArchives,omitempty"`
+	Name          string       `xml:"name,omitempty"`
+	Subscribe     string       `xml:"subscribe,omitempty"`
+	Unsubscribe   string       `xml:"unsubscribe,omitempty"`
+	Post          string       `xml:"post,omitempty"`
+	Archive       string       `xml:"archive,omitempty"`
+	OtherArchives *StringArray `xml:"otherArchives,omitempty"`
 }
-
-type OtherArchives []string
 
 type Scm struct {
 	Connection          string `xml:"connection,omitempty"`
@@ -268,7 +256,7 @@ type Profile struct {
 	Id                     string                  `xml:"id,omitempty"`
 	Activation             *Activation             `xml:"activation,omitempty"`
 	Build                  *Build                  `xml:"build,omitempty"`
-	Modules                *Modules                `xml:"modules,omitempty"`
+	Modules                *StringArray            `xml:"modules,omitempty"`
 	Repositories           *Repositories           `xml:"repositories,omitempty"`
 	PluginRepositories     *Repositories           `xml:"pluginRepositories,omitempty"`
 	Dependencies           *Dependencies           `xml:"dependencies,omitempty"`

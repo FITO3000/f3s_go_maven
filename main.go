@@ -57,7 +57,7 @@ func main() {
 				"B": "2",
 			},
 		},
-		Modules: &maven.Modules{
+		Modules: &maven.StringArray{
 			"p1",
 			"p2",
 		},
