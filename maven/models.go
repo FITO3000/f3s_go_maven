@@ -70,20 +70,20 @@ type Properties struct {
 }
 
 type Build struct {
-	DefaultGoal           string
-	Directory             string
-	FinalName             string
-	Filters               *Filters
-	Resources             *Resources
-	TestResources         *Resources
-	Plugins               *Plugins
-	PluginManagement      *PluginManagement
-	SourceDirectory       string
-	ScriptSourceDirectory string
-	TestSourceDirectory   string
-	OutputDirectory       string
-	TestOutputDirectory   string
-	Extensions            *Extensions
+	DefaultGoal           string            `xml:"defaultGoal,omitempty"`
+	Directory             string            `xml:"directory,omitempty"`
+	FinalName             string            `xml:"finalName,omitempty"`
+	Filters               *Filters          `xml:"filters,omitempty"`
+	Resources             *Resources        `xml:"resources,omitempty"`
+	TestResources         *Resources        `xml:"testResources,omitempty"`
+	Plugins               *Plugins          `xml:"plugins,omitempty"`
+	PluginManagement      *PluginManagement `xml:"pluginManagement,omitempty"`
+	SourceDirectory       string            `xml:"sourceDirectory,omitempty"`
+	ScriptSourceDirectory string            `xml:"scriptSourceDirectory,omitempty"`
+	TestSourceDirectory   string            `xml:"testSourceDirectory,omitempty"`
+	OutputDirectory       string            `xml:"outputDirectory,omitempty"`
+	TestOutputDirectory   string            `xml:"testOutputDirectory,omitempty"`
+	Extensions            *Extensions       `xml:"extensions,omitempty"`
 }
 
 type Filters []string
@@ -91,11 +91,11 @@ type Filters []string
 type Resources []Resource
 
 type Resource struct {
-	TargetPath string
-	Filtering  bool
-	Directory  string
-	Includes   *Includes
-	Excludes   *Excludes
+	TargetPath string    `xml:"targetPath,omitempty"`
+	Filtering  bool      `xml:"filtering,omitempty"`
+	Directory  string    `xml:"directory,omitempty"`
+	Includes   *Includes `xml:"includes,omitempty"`
+	Excludes   *Excludes `xml:"excludes,omitempty"`
 }
 
 type Includes []string
@@ -105,24 +105,24 @@ type Excludes []string
 type Plugins []Plugin
 
 type Plugin struct {
-	GroupId       string
-	ArtifactId    string
-	Version       string
-	Extensions    bool
-	Inherited     bool
-	Configuration *Properties
-	Dependencies  *Dependencies
-	Executions    *Executions
+	GroupId       string        `xml:"groupId,omitempty"`
+	ArtifactId    string        `xml:"artifactId,omitempty"`
+	Version       string        `xml:"version,omitempty"`
+	Extensions    bool          `xml:"extensions,omitempty"`
+	Inherited     bool          `xml:"inherited,omitempty"`
+	Configuration *Properties   `xml:"configuration,omitempty"`
+	Dependencies  *Dependencies `xml:"dependencies,omitempty"`
+	Executions    *Executions   `xml:"executions,omitempty"`
 }
 
 type Executions []Execution
 
 type Execution struct {
-	Id            string
-	Goals         *Goals
-	Phase         string
-	Inherited     bool
-	Configuration *Configuration
+	Id            string         `xml:"id,omitempty"`
+	Goals         *Goals         `xml:"goals,omitempty"`
+	Phase         string         `xml:"phase,omitempty"`
+	Inherited     bool           `xml:"inherited,omitempty"`
+	Configuration *Configuration `xml:"configuration,omitempty"`
 }
 
 type Goals []string
@@ -134,42 +134,42 @@ type PluginManagement []Plugin
 type Extensions []Extension
 
 type Extension struct {
-	GroupId    string
-	ArtifactId string
-	Version    string
+	GroupId    string `xml:"groupId,omitempty"`
+	ArtifactId string `xml:"artifactId,omitempty"`
+	Version    string `xml:"version,omitempty"`
 }
 
 type Reporting struct {
-	OutputDirectory string
-	Plugins         *Plugins
+	OutputDirectory string   `xml:"outputDirectory,omitempty"`
+	Plugins         *Plugins `xml:"plugins,omitempty"`
 }
 
 type Licenses []License
 
 type License struct {
-	Name         string
-	Url          string
-	Distribution string
-	Comments     string
+	Name         string `xml:"name,omitempty"`
+	Url          string `xml:"url,omitempty"`
+	Distribution string `xml:"distribution,omitempty"`
+	Comments     string `xml:"comments,omitempty"`
 }
 
 type Organization struct {
-	Name string
-	Url  string
+	Name string `xml:"name,omitempty"`
+	Url  string `xml:"url,omitempty"`
 }
 
 type Developers []Person
 
 type Person struct {
-	Id              string
-	Name            string
-	Email           string
-	Url             string
-	Organization    string
-	OrganizationUrl string
-	Roles           *Roles
-	Timezone        string
-	Properties      *Properties
+	Id              string      `xml:"id,omitempty"`
+	Name            string      `xml:"name,omitempty"`
+	Email           string      `xml:"email,omitempty"`
+	Url             string      `xml:"url,omitempty"`
+	Organization    string      `xml:"organization,omitempty"`
+	OrganizationUrl string      `xml:"organizationUrl,omitempty"`
+	Roles           *Roles      `xml:"roles,omitempty"`
+	Timezone        string      `xml:"timezone,omitempty"`
+	Properties      *Properties `xml:"properties,omitempty"`
 }
 
 type Roles []string
@@ -177,133 +177,133 @@ type Roles []string
 type Contributors []Person
 
 type IssueManagement struct {
-	System string
-	Url    string
+	System string `xml:"system,omitempty"`
+	Url    string `xml:"url,omitempty"`
 }
 
 type CiManagement struct {
-	System    string
-	Url       string
-	Notifiers *Notifiers
+	System    string     `xml:"system,omitempty"`
+	Url       string     `xml:"url,omitempty"`
+	Notifiers *Notifiers `xml:"notifiers,omitempty"`
 }
 
 type Notifiers []Notifier
 
 type Notifier struct {
-	Type          string
-	SendOnError   string
-	SendOnFailure string
-	SendOnSuccess string
-	SendOnWarning string
-	Configuration *Configuration
+	Type          string         `xml:"type,omitempty"`
+	SendOnError   string         `xml:"sendOnError,omitempty"`
+	SendOnFailure string         `xml:"sendOnFailure,omitempty"`
+	SendOnSuccess string         `xml:"sendOnSuccess,omitempty"`
+	SendOnWarning string         `xml:"sendOnWarning,omitempty"`
+	Configuration *Configuration `xml:"configuration,omitempty"`
 }
 
 type MailingLists []MailingList
 
 type MailingList struct {
-	Name          string
-	Subscribe     string
-	Unsubscribe   string
-	Post          string
-	Archive       string
-	OtherArchives *OtherArchives
+	Name          string         `xml:"name,omitempty"`
+	Subscribe     string         `xml:"subscribe,omitempty"`
+	Unsubscribe   string         `xml:"unsubscribe,omitempty"`
+	Post          string         `xml:"post,omitempty"`
+	Archive       string         `xml:"archive,omitempty"`
+	OtherArchives *OtherArchives `xml:"otherArchives,omitempty"`
 }
 
 type OtherArchives []string
 
 type Scm struct {
-	Connection          string
-	DeveloperConnection string
-	Tag                 string
-	Url                 string
+	Connection          string `xml:"connection,omitempty"`
+	DeveloperConnection string `xml:"developerConnection,omitempty"`
+	Tag                 string `xml:"tag,omitempty"`
+	Url                 string `xml:"url,omitempty"`
 }
 
 type Prerequisites struct {
-	Maven string
+	Maven string `xml:"maven,omitempty"`
 }
 
 type Repositories []Repository
 
 type Repository struct {
-	Releases  *RepositoryPolicies
-	Snapshots *RepositoryPolicies
-	Name      string
-	Id        string
-	Url       string
-	Layout    string
+	Releases  *RepositoryPolicies `xml:"releases,omitempty"`
+	Snapshots *RepositoryPolicies `xml:"snapshots,omitempty"`
+	Name      string              `xml:"name,omitempty"`
+	Id        string              `xml:"id,omitempty"`
+	Url       string              `xml:"url,omitempty"`
+	Layout    string              `xml:"layout,omitempty"`
 }
 
 type RepositoryPolicies struct {
-	Enabled        bool
-	UpdatePolicy   string
-	ChecksumPolicy string
+	Enabled        bool   `xml:"enabled,omitempty"`
+	UpdatePolicy   string `xml:"updatePolicy,omitempty"`
+	ChecksumPolicy string `xml:"checksumPolicy,omitempty"`
 }
 
 type DistributionManagement struct {
-	Repository         *DistributionRepository
-	SnapshotRepository *DistributionRepository
-	Site               *Site
-	Relocation         *Relocation
-	DownloadUrl        string
-	Status             string
+	Repository         *DistributionRepository `xml:"repository,omitempty"`
+	SnapshotRepository *DistributionRepository `xml:"snapshotRepository,omitempty"`
+	Site               *Site                   `xml:"site,omitempty"`
+	Relocation         *Relocation             `xml:"relocation,omitempty"`
+	DownloadUrl        string                  `xml:"downloadUrl,omitempty"`
+	Status             string                  `xml:"status,omitempty"`
 }
 
 type DistributionRepository struct {
-	UniqueVersion bool
-	Id            string
-	Name          string
-	Url           string
-	Layout        string
+	UniqueVersion bool   `xml:"uniqueVersion,omitempty"`
+	Id            string `xml:"id,omitempty"`
+	Name          string `xml:"name,omitempty"`
+	Url           string `xml:"url,omitempty"`
+	Layout        string `xml:"layout,omitempty"`
 }
 type Site struct {
-	Id   string
-	Name string
-	Url  string
+	Id   string `xml:"id,omitempty"`
+	Name string `xml:"name,omitempty"`
+	Url  string `xml:"url,omitempty"`
 }
 
 type Relocation struct {
-	GroupId    string
-	ArtifactId string
-	Version    string
-	Message    string
+	GroupId    string `xml:"groupId,omitempty"`
+	ArtifactId string `xml:"artifactId,omitempty"`
+	Version    string `xml:"version,omitempty"`
+	Message    string `xml:"message,omitempty"`
 }
 
 type Profiles []Profile
 
 type Profile struct {
-	Id                     string
-	Activation             *Activation
-	Build                  *Build
-	Modules                *Modules
-	Repositories           *Repositories
-	PluginRepositories     *Repositories
-	Dependencies           *Dependencies
-	Reporting              *Reporting
-	DependencyManagement   *DependencyManagement
-	DistributionManagement *DistributionManagement
+	Id                     string                  `xml:"id,omitempty"`
+	Activation             *Activation             `xml:"activation,omitempty"`
+	Build                  *Build                  `xml:"build,omitempty"`
+	Modules                *Modules                `xml:"modules,omitempty"`
+	Repositories           *Repositories           `xml:"repositories,omitempty"`
+	PluginRepositories     *Repositories           `xml:"pluginRepositories,omitempty"`
+	Dependencies           *Dependencies           `xml:"dependencies,omitempty"`
+	Reporting              *Reporting              `xml:"reporting,omitempty"`
+	DependencyManagement   *DependencyManagement   `xml:"dependencyManagement,omitempty"`
+	DistributionManagement *DistributionManagement `xml:"distributionManagement,omitempty"`
 }
 
 type Activation struct {
-	ActiveByDefault bool
-	Jdk             string
-	Os              *Os
-	Property        *Property
-	File            *File
+	ActiveByDefault bool      `xml:"activeByDefault,omitempty"`
+	Jdk             string    `xml:"jdk,omitempty"`
+	Os              *Os       `xml:"os,omitempty"`
+	Property        *Property `xml:"property,omitempty"`
+	File            *File     `xml:"file,omitempty"`
 }
 
 type Os struct {
-	Name    string
-	Family  string
-	Arch    string
-	Version string
+	Name    string `xml:"name,omitempty"`
+	Family  string `xml:"family,omitempty"`
+	Arch    string `xml:"arch,omitempty"`
+	Version string `xml:"version,omitempty"`
 }
 
 type Property struct {
-	Name  string
-	Value string
+	Name  string `xml:"name,omitempty"`
+	Value string `xml:"value,omitempty"`
 }
 
 type File struct {
-	Exists  string
-	Missing string
+	Exists  string `xml:"exists,omitempty"`
+	Missing string `xml:"missing,omitempty"`
 }

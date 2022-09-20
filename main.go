@@ -47,6 +47,13 @@ func main() {
 				"B": "2",
 			},
 		},
+		Modules: &maven.Modules{
+			"p1",
+			"p2",
+		},
+		Build: &maven.Build{
+			FinalName: "final-name",
+		},
 	}
 
 	pom, _ := maven.Marshal(p)
