@@ -8,26 +8,34 @@ import (
 func main() {
 	p := &maven.Project{
 		Parent: &maven.Parent{
-			GroupId:    "tech.f3s.parent",
-			ArtifactId: "f3s-parent",
-			Version:    "1",
+			GAV: maven.GAV{
+				GroupId:    "tech.f3s.parent",
+				ArtifactId: "f3s-parent",
+				Version:    "1",
+			},
 		},
-		GroupId:    "tech.f3s.test",
-		ArtifactId: "test-pom",
-		Version:    "1.0.0-SNAPSHOT",
-		Packaging:  "pom",
+		GAV: maven.GAV{
+			GroupId:    "tech.f3s.test",
+			ArtifactId: "test-pom",
+			Version:    "1.0.0-SNAPSHOT",
+		},
+		Packaging: "pom",
 		DependencyManagement: &maven.DependencyManagement{
 			Dependencies: &maven.Dependencies{
 				Dependency: []maven.Dependency{
 					{
-						GroupId:    "org.oss-a",
-						ArtifactId: "oss-a-super-lib",
-						Version:    "7.0.1",
+						GAV: maven.GAV{
+							GroupId:    "org.oss-a",
+							ArtifactId: "oss-a-super-lib",
+							Version:    "7.0.1",
+						},
 					},
 					{
-						GroupId:    "org.oss-b",
-						ArtifactId: "oss-a-super-lib",
-						Version:    "1.9.4",
+						GAV: maven.GAV{
+							GroupId:    "org.oss-b",
+							ArtifactId: "oss-a-super-lib",
+							Version:    "1.9.4",
+						},
 					},
 				},
 			},
@@ -35,9 +43,11 @@ func main() {
 		Dependencies: &maven.Dependencies{
 			Dependency: []maven.Dependency{
 				{
-					GroupId:    "G1",
-					ArtifactId: "A1",
-					Version:    "1",
+					GAV: maven.GAV{
+						GroupId:    "G1",
+						ArtifactId: "A1",
+						Version:    "1",
+					},
 				},
 			},
 		},

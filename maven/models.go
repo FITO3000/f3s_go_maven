@@ -7,12 +7,10 @@ import (
 // https://maven.apache.org/pom.html
 
 type Project struct {
-	XMLName                xml.Name                `xml:"project"`
-	ModelVersion           string                  `xml:"modelVersion,omitempty"`
-	Parent                 *Parent                 `xml:"parent,omitempty"`
-	GroupId                string                  `xml:"groupId,omitempty"`
-	ArtifactId             string                  `xml:"artifactId,omitempty"`
-	Version                string                  `xml:"version,omitempty"`
+	XMLName      xml.Name `xml:"project"`
+	ModelVersion string   `xml:"modelVersion,omitempty"`
+	Parent       *Parent  `xml:"parent,omitempty"`
+	GAV
 	Packaging              string                  `xml:"packaging,omitempty"`
 	Properties             *Properties             `xml:"properties,omitempty"`
 	Dependencies           *Dependencies           `xml:"dependencies,omitempty"`
@@ -39,23 +37,25 @@ type Project struct {
 	Profiles               *Profiles               `xml:"profiles>profile,omitempty"`
 }
 
+type GAV struct {
+	GroupId    string `xml:"groupId,omitempty"`
+	ArtifactId string `xml:"artifactId,omitempty"`
+	Version    string `xml:"version,omitempty"`
+}
+
 type Dependencies struct {
 	Dependency []Dependency `xml:"dependency,omitempty"`
 }
 
 type Dependency struct {
-	GroupId    string `xml:"groupId,omitempty"`
-	ArtifactId string `xml:"artifactId,omitempty"`
-	Version    string `xml:"version,omitempty"`
-	Type       string `xml:"type,omitempty"`
-	Scope      string `xml:"scope,omitempty"`
-	Optional   bool   `xml:"optional,omitempty"`
+	GAV
+	Type     string `xml:"type,omitempty"`
+	Scope    string `xml:"scope,omitempty"`
+	Optional bool   `xml:"optional,omitempty"`
 }
 
 type Parent struct {
-	GroupId      string `xml:"groupId,omitempty"`
-	ArtifactId   string `xml:"artifactId,omitempty"`
-	Version      string `xml:"version,omitempty"`
+	GAV
 	RelativePath string `xml:"relativePath,omitempty"`
 }
 
@@ -105,9 +105,7 @@ type Excludes []string
 type Plugins []Plugin
 
 type Plugin struct {
-	GroupId       string        `xml:"groupId,omitempty"`
-	ArtifactId    string        `xml:"artifactId,omitempty"`
-	Version       string        `xml:"version,omitempty"`
+	GAV
 	Extensions    bool          `xml:"extensions,omitempty"`
 	Inherited     bool          `xml:"inherited,omitempty"`
 	Configuration *Properties   `xml:"configuration,omitempty"`
@@ -134,9 +132,7 @@ type PluginManagement []Plugin
 type Extensions []Extension
 
 type Extension struct {
-	GroupId    string `xml:"groupId,omitempty"`
-	ArtifactId string `xml:"artifactId,omitempty"`
-	Version    string `xml:"version,omitempty"`
+	GAV
 }
 
 type Reporting struct {
@@ -262,10 +258,8 @@ type Site struct {
 }
 
 type Relocation struct {
-	GroupId    string `xml:"groupId,omitempty"`
-	ArtifactId string `xml:"artifactId,omitempty"`
-	Version    string `xml:"version,omitempty"`
-	Message    string `xml:"message,omitempty"`
+	GAV
+	Message string `xml:"message,omitempty"`
 }
 
 type Profiles []Profile
