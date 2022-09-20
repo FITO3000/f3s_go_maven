@@ -1,0 +1,54 @@
+package main
+
+import (
+	"fmt"
+	"github/FITO3000/f3s_go_maven/maven"
+)
+
+func main() {
+	p := &maven.Project{
+		Parent: &maven.Parent{
+			GroupId:    "tech.f3s.parent",
+			ArtifactId: "f3s-parent",
+			Version:    "1",
+		},
+		GroupId:    "tech.f3s.test",
+		ArtifactId: "test-pom",
+		Version:    "1.0.0-SNAPSHOT",
+		Packaging:  "pom",
+		DependencyManagement: &maven.DependencyManagement{
+			Dependencies: &maven.Dependencies{
+				Dependency: []maven.Dependency{
+					{
+						GroupId:    "org.oss-a",
+						ArtifactId: "oss-a-super-lib",
+						Version:    "7.0.1",
+					},
+					{
+						GroupId:    "org.oss-b",
+						ArtifactId: "oss-a-super-lib",
+						Version:    "1.9.4",
+					},
+				},
+			},
+		},
+		Dependencies: &maven.Dependencies{
+			Dependency: []maven.Dependency{
+				{
+					GroupId:    "G1",
+					ArtifactId: "A1",
+					Version:    "1",
+				},
+			},
+		},
+		Properties: &maven.Properties{
+			Entries: map[string]string{
+				"A": "1",
+				"B": "2",
+			},
+		},
+	}
+
+	pom, _ := maven.Marshal(p)
+	fmt.Println(string(pom))
+}
