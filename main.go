@@ -6,65 +6,57 @@ import (
 )
 
 func main() {
-	p := &maven.Project{
-		Parent: &maven.Parent{
-			GAV: maven.GAV{
-				GroupId:    "tech.f3s.parent",
-				ArtifactId: "f3s-parent",
-				Version:    "1",
-			},
-		},
-		GAV: maven.GAV{
-			GroupId:    "tech.f3s.test",
-			ArtifactId: "test-pom",
-			Version:    "1.0.0-SNAPSHOT",
-		},
-		Packaging: "pom",
-		DependencyManagement: &maven.DependencyManagement{
-			Dependencies: &maven.Dependencies{
-				Dependency: []maven.Dependency{
-					{
-						GAV: maven.GAV{
-							GroupId:    "org.oss-a",
-							ArtifactId: "oss-a-super-lib",
-							Version:    "7.0.1",
-						},
-					},
-					{
-						GAV: maven.GAV{
-							GroupId:    "org.oss-b",
-							ArtifactId: "oss-a-super-lib",
-							Version:    "1.9.4",
-						},
-					},
-				},
-			},
-		},
-		Dependencies: &maven.Dependencies{
-			Dependency: []maven.Dependency{
-				{
-					GAV: maven.GAV{
-						GroupId:    "G1",
-						ArtifactId: "A1",
-						Version:    "1",
-					},
-				},
-			},
-		},
-		Properties: &maven.Properties{
-			Entries: map[string]string{
-				"A": "1",
-				"B": "2",
-			},
-		},
-		Modules: &maven.StringArray{
-			"p1",
-			"p2",
-		},
-		Build: &maven.Build{
-			FinalName: "final-name",
-		},
-	}
+	p := maven.NewProject()
+
+	p.SetCoordinates("tech.f3s.app", "test-app-1", "1.7.0")
+
+	p.SetParent(&maven.Parent{
+		GroupId:    "tech.f3s.parent",
+		ArtifactId: "f3s-parent",
+		Version:    "1",
+	})
+
+	p.AddProperties(map[string]string{
+		"k1": "v1",
+		"k2": "v2",
+		"k3": "v3",
+		"k4": "v4",
+	})
+
+	p.AddManagedDependency(maven.Dependency{
+		GroupId:    "GG01",
+		ArtifactId: "AA01",
+		Version:    "${aa.version}",
+	})
+
+	p.AddDependency(maven.Dependency{
+		GroupId:    "GG01",
+		ArtifactId: "AA01",
+	})
+
+	p.AddDependency(maven.Dependency{
+		GroupId:    "GG01",
+		ArtifactId: "AA02",
+		Version:    "1.2.3",
+	})
+
+	p.AddDependency(maven.Dependency{
+		GroupId:    "GG01",
+		ArtifactId: "AA01",
+		Version:    "2.0",
+	})
+
+	p.AddModules([]string{
+		"p1",
+		"p2",
+		"p7",
+	})
+
+	p.AddModules([]string{
+		"p1",
+		"p3",
+		"p4",
+	})
 
 	pom, _ := maven.Marshal(p)
 	fmt.Println(string(pom))

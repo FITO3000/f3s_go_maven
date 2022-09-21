@@ -2,20 +2,24 @@ package maven
 
 import (
 	"encoding/xml"
+
+	"golang.org/x/exp/slices"
 )
 
 // https://maven.apache.org/pom.html
 
 type Project struct {
-	XMLName      xml.Name `xml:"project"`
-	ModelVersion string   `xml:"modelVersion,omitempty"`
-	Parent       *Parent  `xml:"parent,omitempty"`
-	GAV
+	XMLName                xml.Name                `xml:"project"`
+	ModelVersion           string                  `xml:"modelVersion,omitempty"`
+	Parent                 *Parent                 `xml:"parent,omitempty"`
+	GroupId                string                  `xml:"groupId,omitempty"`
+	ArtifactId             string                  `xml:"artifactId,omitempty"`
+	Version                string                  `xml:"version,omitempty"`
 	Packaging              string                  `xml:"packaging,omitempty"`
 	Properties             *Properties             `xml:"properties,omitempty"`
 	Dependencies           *Dependencies           `xml:"dependencies,omitempty"`
 	DependencyManagement   *DependencyManagement   `xml:"dependencyManagement,omitempty"`
-	Modules                *StringArray            `xml:"modules>module,omitempty"`
+	Modules                *ModuleArray            `xml:"modules,omitempty"`
 	Build                  *Build                  `xml:"build,omitempty"`
 	Reporting              *Reporting              `xml:"reporting,omitempty"`
 	Name                   string                  `xml:"name,omitempty"`
@@ -37,25 +41,126 @@ type Project struct {
 	Profiles               *Profiles               `xml:"profiles>profile,omitempty"`
 }
 
-type GAV struct {
-	GroupId    string `xml:"groupId,omitempty"`
-	ArtifactId string `xml:"artifactId,omitempty"`
-	Version    string `xml:"version,omitempty"`
+func NewProject() *Project {
+	return &Project{
+		ModelVersion: "4.0.0",
+	}
+}
+
+func (p *Project) getOrCreateDependencies() *Dependencies {
+	if p.Dependencies == nil {
+		p.Dependencies = NewDependencies()
+	}
+	return p.Dependencies
+}
+
+func (p *Project) getOrCreateManagedDependencies() *Dependencies {
+	if p.DependencyManagement == nil {
+		p.DependencyManagement = NewDependencyManagement()
+	}
+	return p.DependencyManagement.Dependencies
+}
+
+func (p *Project) getOrCreateProperties() *Properties {
+	if p.Properties == nil {
+		p.Properties = &Properties{
+			Entries: map[string]string{},
+		}
+	}
+	return p.Properties
+}
+
+func (p *Project) getOrCreateModules() *ModuleArray {
+	if p.Modules == nil {
+		p.Modules = &ModuleArray{
+			Values: []string{},
+		}
+	}
+	return p.Modules
+}
+
+func (p *Project) SetParent(parent *Parent) {
+	p.Parent = parent
+}
+
+func (p *Project) AddProperties(properties map[string]string) {
+	for key, value := range properties {
+		props := p.getOrCreateProperties().Entries
+		props[key] = value
+	}
+}
+
+func (p *Project) SetCoordinates(groupId, artifactId, version string) {
+	p.GroupId = groupId
+	p.ArtifactId = artifactId
+	p.Version = version
+}
+
+func (p *Project) AddDependency(dependency Dependency) {
+	p.getOrCreateDependencies().AddDependency(dependency)
+}
+
+func (p *Project) AddManagedDependency(dependency Dependency) {
+	p.getOrCreateManagedDependencies().AddDependency(dependency)
+}
+
+func (p *Project) AddModules(modules []string) {
+	for _, module := range modules {
+		pModules := p.getOrCreateModules()
+		idx := slices.IndexFunc(pModules.Values, func(v string) bool {
+			return v == module
+		})
+		if idx < 0 {
+			pModules.Values = append(pModules.Values, module)
+		}
+	}
 }
 
 type Dependencies struct {
-	Dependency []Dependency `xml:"dependency,omitempty"`
+	Values []Dependency `xml:"dependency,omitempty"`
+}
+
+func NewDependencies() *Dependencies {
+	return &Dependencies{
+		Values: []Dependency{},
+	}
+}
+
+func NewDependencyManagement() *DependencyManagement {
+	return &DependencyManagement{
+		Dependencies: NewDependencies(),
+	}
+}
+
+func (d *Dependencies) AddDependency(dependency Dependency) {
+	if len(d.Values) == 0 {
+		d.Values = append(d.Values, dependency)
+	} else {
+		if idx := slices.IndexFunc(d.Values, func(v Dependency) bool { return v.IsSimilar(dependency) }); idx >= 0 {
+			d.Values[idx] = dependency
+		} else {
+			d.Values = append(d.Values, dependency)
+		}
+	}
 }
 
 type Dependency struct {
-	GAV
-	Type     string `xml:"type,omitempty"`
-	Scope    string `xml:"scope,omitempty"`
-	Optional bool   `xml:"optional,omitempty"`
+	GroupId    string `xml:"groupId,omitempty"`
+	ArtifactId string `xml:"artifactId,omitempty"`
+	Version    string `xml:"version,omitempty"`
+	Type       string `xml:"type,omitempty"`
+	Scope      string `xml:"scope,omitempty"`
+	Optional   bool   `xml:"optional,omitempty"`
+}
+
+func (d Dependency) IsSimilar(other Dependency) bool {
+	return d.GroupId == other.GroupId && d.ArtifactId == other.ArtifactId
 }
 
 type Parent struct {
-	GAV
+	GroupId      string `xml:"groupId,omitempty"`
+	ArtifactId   string `xml:"artifactId,omitempty"`
+	Version      string `xml:"version,omitempty"`
 	RelativePath string `xml:"relativePath,omitempty"`
 }
 
@@ -63,7 +168,13 @@ type DependencyManagement struct {
 	Dependencies *Dependencies `xml:"dependencies,omitempty"`
 }
 
-type StringArray []string
+type ModuleArray struct {
+	Values []string `xml:"module,omitempty"`
+}
+
+type StringArray struct {
+	Values []string
+}
 
 type Properties struct {
 	Entries map[string]string
@@ -99,7 +210,9 @@ type Resource struct {
 type Plugins []Plugin
 
 type Plugin struct {
-	GAV
+	GroupId       string        `xml:"groupId,omitempty"`
+	ArtifactId    string        `xml:"artifactId,omitempty"`
+	Version       string        `xml:"version,omitempty"`
 	Extensions    bool          `xml:"extensions,omitempty"`
 	Inherited     bool          `xml:"inherited,omitempty"`
 	Configuration *Properties   `xml:"configuration,omitempty"`
@@ -124,7 +237,9 @@ type PluginManagement []Plugin
 type Extensions []Extension
 
 type Extension struct {
-	GAV
+	GroupId    string `xml:"groupId,omitempty"`
+	ArtifactId string `xml:"artifactId,omitempty"`
+	Version    string `xml:"version,omitempty"`
 }
 
 type Reporting struct {
@@ -246,8 +361,10 @@ type Site struct {
 }
 
 type Relocation struct {
-	GAV
-	Message string `xml:"message,omitempty"`
+	GroupId    string `xml:"groupId,omitempty"`
+	ArtifactId string `xml:"artifactId,omitempty"`
+	Version    string `xml:"version,omitempty"`
+	Message    string `xml:"message,omitempty"`
 }
 
 type Profiles []Profile
