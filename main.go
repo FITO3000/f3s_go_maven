@@ -6,58 +6,35 @@ import (
 )
 
 func main() {
-	p := maven.NewProject()
 
-	p.SetCoordinates("tech.f3s.app", "test-app-1", "1.7.0")
+	dir := "/home/fit/temp/maven-test"
 
-	p.SetParent(&maven.Parent{
-		GroupId:    "tech.f3s.parent",
-		ArtifactId: "f3s-parent",
-		Version:    "1",
-	})
+	maven.DeletePom(dir)
 
-	p.AddProperties(map[string]string{
-		"k1": "v1",
-		"k2": "v2",
-		"k3": "v3",
-		"k4": "v4",
-	})
+	pom1, _ := maven.CreatePom(dir)
+	pom2, _ := maven.LoadPom(dir)
+	pom3, err := maven.SearchPom(dir)
+	if err != nil {
+		panic(err)
+	}
 
-	p.AddManagedDependency(maven.Dependency{
-		GroupId:    "GG01",
-		ArtifactId: "AA01",
-		Version:    "${aa.version}",
-	})
+	if pom1 != nil && pom2 != nil && pom3 != nil {
+		fmt.Println("OK")
+	} else {
+		fmt.Println("Shit!")
+	}
 
-	p.AddDependency(maven.Dependency{
-		GroupId:    "GG01",
-		ArtifactId: "AA01",
-	})
+	pom4, err := maven.SearchPom("/home/fit/temp")
+	if pom4 == nil && err == nil {
+		fmt.Println("OK 2")
+	} else {
+		fmt.Println("Shit 2!")
+	}
 
-	p.AddDependency(maven.Dependency{
-		GroupId:    "GG01",
-		ArtifactId: "AA02",
-		Version:    "1.2.3",
-	})
-
-	p.AddDependency(maven.Dependency{
-		GroupId:    "GG01",
-		ArtifactId: "AA01",
-		Version:    "2.0",
-	})
-
-	p.AddModules([]string{
-		"p1",
-		"p2",
-		"p7",
-	})
-
-	p.AddModules([]string{
-		"p1",
-		"p3",
-		"p4",
-	})
-
-	pom, _ := maven.Marshal(p)
-	fmt.Println(string(pom))
+	pom5, err := maven.SearchPom("/home/fit/temp/maven-test/u1/u2/u3")
+	if pom5 != nil && err == nil {
+		fmt.Println("OK 3")
+	} else {
+		fmt.Println("Shit 3!")
+	}
 }

@@ -9,6 +9,15 @@ func Marshal(model *Project) ([]byte, error) {
 	return xml.MarshalIndent(model, "", "  ")
 }
 
+func Unmarshal(data []byte) (*Project, error) {
+	project := NewProject()
+	if err := xml.Unmarshal(data, project); err != nil {
+		return nil, err
+	} else {
+		return project, nil
+	}
+}
+
 func (p *Properties) UnmarshalXML(d *xml.Decoder, start xml.StartElement) (err error) {
 	type entry struct {
 		XMLName xml.Name
