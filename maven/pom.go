@@ -7,12 +7,12 @@ import (
 )
 
 type Pom interface {
-	Model
 	Store() error
 	Load() error
-}
+	GetPath() string
+	GetDirectory() string
 
-type Model interface {
+	ModelReadWriter
 }
 
 func PomExists(directory string) (bool, error) {
@@ -126,4 +126,92 @@ func (p *pom) Load() error {
 			return nil
 		}
 	}
+}
+
+func (p *pom) GetPath() string {
+	return p.path
+}
+
+func (p *pom) GetDirectory() string {
+	return filepath.Dir(p.path)
+}
+
+func (p *pom) GetParent() *Parent {
+	return p.model.Parent
+}
+
+func (p *pom) HasParent() bool {
+	return p.model.Parent != nil
+}
+
+func (p *pom) GetCoordinates() *Coordinates {
+	return p.model.GetCoordinates()
+}
+
+func (p *pom) GetDependency(c *Coordinates) *Dependency {
+	return p.model.GetDependency(c)
+}
+
+func (p *pom) HasDependency(c *Coordinates) bool {
+	return p.model.HasDependency(c)
+}
+
+func (p *pom) GetManagedDependency(c *Coordinates) *Dependency {
+	return p.model.GetManagedDependency(c)
+}
+
+func (p *pom) HasManagedDependency(c *Coordinates) bool {
+	return p.model.HasManagedDependency(c)
+}
+
+func (p *pom) GetProperties() *map[string]string {
+	panic("not implemented") // TODO: Implement
+}
+
+func (p *pom) GetProperty() string {
+	panic("not implemented") // TODO: Implement
+}
+
+func (p *pom) HasProperty(k string) bool {
+	return p.model.HasProperty(k)
+}
+
+func (p *pom) AddProperty(k, v string) {
+	p.model.provideProperties().AddProperty(k, v)
+}
+
+func (p *pom) AddProperties(props map[string]string) {
+	p.model.provideProperties().AddProperties(props)
+}
+
+func (p *pom) SetParent(parent *Parent) {
+	p.model.SetParent(parent)
+}
+
+func (p *pom) RemoveParent() *Parent {
+	panic("not implemented") // TODO: Implement
+}
+
+func (p *pom) SetCoordinates(c *Coordinates) {
+	p.model.SetCoordinates(c)
+}
+
+func (p *pom) AddDependency(d *Dependency) {
+	p.model.AddDependency(d)
+}
+
+func (p *pom) RemoveDependency(c *Coordinates) *Dependency {
+	panic("not implemented") // TODO: Implement
+}
+
+func (p *pom) AddManagedDependency(d *Dependency) {
+	p.model.AddManagedDependency(d)
+}
+
+func (p *pom) AddManagedDependencies(d []*Dependency) {
+	p.model.AddManagedDependencies(d)
+}
+
+func (p *pom) RemoveManagedDependency(c *Coordinates) *Dependency {
+	panic("not implemented") // TODO: Implement
 }

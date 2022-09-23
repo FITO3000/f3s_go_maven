@@ -41,6 +41,12 @@ type Project struct {
 	Profiles               *Profiles               `xml:"profiles>profile,omitempty"`
 }
 
+type Coordinates struct {
+	GroupId    string `xml:"groupId,omitempty"`
+	ArtifactId string `xml:"artifactId,omitempty"`
+	Version    string `xml:"version,omitempty"`
+}
+
 func NewProject() *Project {
 	return &Project{
 		ModelVersion: "4.0.0",
@@ -83,27 +89,6 @@ func (p *Project) SetParent(parent *Parent) {
 	p.Parent = parent
 }
 
-func (p *Project) AddProperties(properties map[string]string) {
-	for key, value := range properties {
-		props := p.getOrCreateProperties().Entries
-		props[key] = value
-	}
-}
-
-func (p *Project) SetCoordinates(groupId, artifactId, version string) {
-	p.GroupId = groupId
-	p.ArtifactId = artifactId
-	p.Version = version
-}
-
-func (p *Project) AddDependency(dependency Dependency) {
-	p.getOrCreateDependencies().AddDependency(dependency)
-}
-
-func (p *Project) AddManagedDependency(dependency Dependency) {
-	p.getOrCreateManagedDependencies().AddDependency(dependency)
-}
-
 func (p *Project) AddModules(modules []string) {
 	for _, module := range modules {
 		pModules := p.getOrCreateModules()
@@ -118,30 +103,6 @@ func (p *Project) AddModules(modules []string) {
 
 type Dependencies struct {
 	Values []Dependency `xml:"dependency,omitempty"`
-}
-
-func NewDependencies() *Dependencies {
-	return &Dependencies{
-		Values: []Dependency{},
-	}
-}
-
-func NewDependencyManagement() *DependencyManagement {
-	return &DependencyManagement{
-		Dependencies: NewDependencies(),
-	}
-}
-
-func (d *Dependencies) AddDependency(dependency Dependency) {
-	if len(d.Values) == 0 {
-		d.Values = append(d.Values, dependency)
-	} else {
-		if idx := slices.IndexFunc(d.Values, func(v Dependency) bool { return v.IsSimilar(dependency) }); idx >= 0 {
-			d.Values[idx] = dependency
-		} else {
-			d.Values = append(d.Values, dependency)
-		}
-	}
 }
 
 type Dependency struct {

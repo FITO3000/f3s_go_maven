@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github/FITO3000/f3s_go_maven/maven"
 )
 
@@ -11,30 +10,51 @@ func main() {
 
 	maven.DeletePom(dir)
 
-	pom1, _ := maven.CreatePom(dir)
-	pom2, _ := maven.LoadPom(dir)
-	pom3, err := maven.SearchPom(dir)
-	if err != nil {
+	if pom, err := maven.CreatePom(dir); err != nil {
 		panic(err)
-	}
-
-	if pom1 != nil && pom2 != nil && pom3 != nil {
-		fmt.Println("OK")
 	} else {
-		fmt.Println("Shit!")
-	}
+		pom.SetParent(&maven.Parent{
+			GroupId:    "tech.f3s",
+			ArtifactId: "f3s-parent",
+			Version:    "1",
+		})
+		pom.SetCoordinates(&maven.Coordinates{
+			GroupId:    "tech.f3s",
+			ArtifactId: "f3s-service",
+			Version:    "1.0.0-SNAPSHOT",
+		})
 
-	pom4, err := maven.SearchPom("/home/fit/temp")
-	if pom4 == nil && err == nil {
-		fmt.Println("OK 2")
-	} else {
-		fmt.Println("Shit 2!")
-	}
+		pom.AddProperty("a.version", "1.9")
+		pom.AddProperty("b.version", "1.1")
+		pom.AddProperty("c.version", "2.0")
 
-	pom5, err := maven.SearchPom("/home/fit/temp/maven-test/u1/u2/u3")
-	if pom5 != nil && err == nil {
-		fmt.Println("OK 3")
-	} else {
-		fmt.Println("Shit 3!")
+		pom.AddProperties(map[string]string{
+			"d.version": "4.0.0",
+			"e.version": "4.4.0",
+			"f.version": "4.0.4",
+		})
+
+		pom.AddManagedDependency(&maven.Dependency{
+			GroupId:    "tech.f3s",
+			ArtifactId: "testing",
+			Version:    "1.0.0",
+		})
+
+		pom.AddManagedDependencies([]*maven.Dependency{
+			{
+				GroupId:    "tech.f3s",
+				ArtifactId: "lib-1",
+				Version:    "1.0.0",
+			},
+			{
+				GroupId:    "tech.f3s",
+				ArtifactId: "lib-2",
+				Version:    "1.0.0-SNAPSHOT",
+			},
+		})
+
+		if err := pom.Store(); err != nil {
+			panic(err)
+		}
 	}
 }
