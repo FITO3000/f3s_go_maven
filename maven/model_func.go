@@ -53,11 +53,11 @@ func (p *Project) HasDependency(c *Coordinates) bool {
 }
 
 func (p *Project) GetManagedDependency(c *Coordinates) *Dependency {
-	return p.GetManagedDependency(c)
+	return p.provideDependencyManagement().Dependencies.GetDependency(c)
 }
 
 func (p *Project) HasManagedDependency(c *Coordinates) bool {
-	return p.HasManagedDependency(c)
+	return p.provideDependencyManagement().Dependencies.HasDependency(c)
 }
 
 func (p *Project) GetCoordinates() *Coordinates {

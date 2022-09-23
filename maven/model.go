@@ -53,29 +53,6 @@ func NewProject() *Project {
 	}
 }
 
-func (p *Project) getOrCreateDependencies() *Dependencies {
-	if p.Dependencies == nil {
-		p.Dependencies = NewDependencies()
-	}
-	return p.Dependencies
-}
-
-func (p *Project) getOrCreateManagedDependencies() *Dependencies {
-	if p.DependencyManagement == nil {
-		p.DependencyManagement = NewDependencyManagement()
-	}
-	return p.DependencyManagement.Dependencies
-}
-
-func (p *Project) getOrCreateProperties() *Properties {
-	if p.Properties == nil {
-		p.Properties = &Properties{
-			Entries: map[string]string{},
-		}
-	}
-	return p.Properties
-}
-
 func (p *Project) getOrCreateModules() *ModuleArray {
 	if p.Modules == nil {
 		p.Modules = &ModuleArray{
