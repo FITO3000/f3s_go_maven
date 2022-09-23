@@ -66,6 +66,12 @@ func (p *Project) SetParent(parent *Parent) {
 	p.Parent = parent
 }
 
+func (p *Project) RemoveParent() *Parent {
+	parent := p.Parent
+	p = nil
+	return parent
+}
+
 func (p *Project) AddModules(modules []string) {
 	for _, module := range modules {
 		pModules := p.getOrCreateModules()

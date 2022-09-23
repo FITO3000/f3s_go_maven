@@ -189,7 +189,7 @@ func (p *pom) SetParent(parent *Parent) {
 }
 
 func (p *pom) RemoveParent() *Parent {
-	panic("not implemented") // TODO: Implement
+	return p.model.RemoveParent()
 }
 
 func (p *pom) SetCoordinates(c *Coordinates) {
@@ -201,7 +201,7 @@ func (p *pom) AddDependency(d *Dependency) {
 }
 
 func (p *pom) RemoveDependency(c *Coordinates) *Dependency {
-	panic("not implemented") // TODO: Implement
+	return p.model.RemoveDependency(c)
 }
 
 func (p *pom) AddManagedDependency(d *Dependency) {
@@ -213,5 +213,5 @@ func (p *pom) AddManagedDependencies(d []*Dependency) {
 }
 
 func (p *pom) RemoveManagedDependency(c *Coordinates) *Dependency {
-	panic("not implemented") // TODO: Implement
+	return p.model.RemoveManagedDependency(c)
 }

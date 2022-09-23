@@ -115,12 +115,24 @@ func (p *Project) AddDependency(d *Dependency) {
 	p.provideDependencies().AddDependency(d)
 }
 
+func (p *Project) AddDependencies(d []*Dependency) {
+	p.provideDependencies().AddDependencies(d)
+}
+
+func (p *Project) RemoveDependency(c *Coordinates) *Dependency {
+	return p.provideDependencies().RemoveDependency(c)
+}
+
 func (p *Project) AddManagedDependency(d *Dependency) {
 	p.provideDependencyManagement().Dependencies.AddDependency(d)
 }
 
 func (p *Project) AddManagedDependencies(d []*Dependency) {
-	p.provideDependencyManagement().Dependencies.AddManagedDependencies(d)
+	p.provideDependencyManagement().Dependencies.AddDependencies(d)
+}
+
+func (p *Project) RemoveManagedDependency(c *Coordinates) *Dependency {
+	return p.provideDependencyManagement().Dependencies.RemoveDependency(c)
 }
 
 // Dependency
@@ -166,7 +178,7 @@ func (d *Dependencies) AddDependency(dependency *Dependency) {
 	}
 }
 
-func (d *Dependencies) AddManagedDependencies(deps []*Dependency) {
+func (d *Dependencies) AddDependencies(deps []*Dependency) {
 	for _, dep := range deps {
 		d.AddDependency(dep)
 	}
