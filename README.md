@@ -1,1 +1,1 @@
-# f3s_go_maven
+# go-maven
