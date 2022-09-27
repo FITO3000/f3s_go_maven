@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github/FITO3000/f3s_go_maven/maven"
+	"github.com/fit-o-matic/go-maven/maven"
 )
 
 func main() {
