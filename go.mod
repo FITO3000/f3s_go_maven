@@ -1,4 +1,4 @@
-module github.com/FITO3000/f3s_go_maven
+module github.com/fit-o-matic/go-maven
 
 go 1.19
 
