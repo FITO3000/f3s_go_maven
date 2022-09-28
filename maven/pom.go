@@ -49,6 +49,8 @@ func CreatePom(directory string) (Pom, error) {
 	}
 }
 
+// LoadPom loads a pom.xml file from directory and returns a Pom structure
+// If pom.xml does not exist, LoadPom returns an error
 func LoadPom(directory string) (Pom, error) {
 	if exists, err := PomExists(directory); err != nil {
 		return nil, err
